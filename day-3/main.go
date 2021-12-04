@@ -9,7 +9,7 @@ import (
 )
 
 func getInput() *os.File {
-	// f, err = os.Open("example.txt")
+	// f, err := os.Open("example.txt")
 	f, err := os.Open("input.txt")
 	if err != nil {
 		panic(err.Error())
