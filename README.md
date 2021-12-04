@@ -18,7 +18,7 @@ My clumsiness of the day aside (it took me too long to pull in the example input
 
 This repo is now public. What the heck, might as well. Not like I'm a contender for the global leaderboard anyway :P
 
-I loved today's challenge. I'm not trying to be done as fast as possible; rather, I try to learn where I feel that I can do better, to see where I can break free from thinking about problems in the usual chronological order (e.g. rather than mark every bingo board after every call, do the entire call sequence per board), etc. I really working with Go struct methods, and though I don't have much previous experience with pointers (only through studying certain big C++ projects), I really find that I love working with them and can do so intuitively.
+I loved today's challenge. I'm not trying to be done as fast as possible; rather, I try to learn where I feel that I can do better, to see where I can break free from thinking about problems in the usual chronological order (e.g. rather than mark every bingo board after every call, do the entire call sequence per board), etc. I really enjoy working with Go struct methods, and though I don't have much previous experience with pointers (only through studying certain big C++ projects), I really find that I love working with them and can do so intuitively.
 
 On the flipside, Go's opinionatedness has really shown it's — in my opinion — ugly side today, specifically in how it "beautifies" math expressions. Take this line that I ended up with:
 
