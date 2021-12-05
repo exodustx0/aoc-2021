@@ -35,3 +35,7 @@ Dunno about you, but that reads like yikes to me. I'm a big proponent for space-
 Especially since `*` is used for both multiplying and dereferencing, this is _much_ more legible to me. Note that Go will format to this only when this expression is _one_ of the arguments to a function call; for some reason, however, it'll actually format to the _space-separated_ version if it's the only argument in a function call. I guess that Go wants spaces to separate both arguments and expression tokens. One space-separation to rule them all.
 
 (Also, in case it comes up at some point: I don't mind going back and reworking previous days' code. I'm a perfectionist. Posterity can still have the commit history!)
+
+### Day 5
+
+When I first went most of the way through [A Tour of Go](https://go.dev/tour), I anticipated annoyance-to-come with how `if` conditions require brackets and there are no ternary conditions. The `(*Grid).drawLines` method that I wrote today made that come true. I tried to work around it by using a `switch` block and a label break, but any (significant) improvements in cleanliness were dashed by Go's formatter. I'm not saying it can't be done better; after all, I've only recently took the plunge into Go. But I'm very much worried that all I'll end up learning about this is "deal with it". I suppose time will tell.
