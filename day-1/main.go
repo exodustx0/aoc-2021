@@ -21,8 +21,7 @@ func partOne() {
 	f := getInput()
 	defer f.Close()
 
-	var a, b int
-	inc := 0
+	var a, b, inc int
 	first := true
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
@@ -45,11 +44,9 @@ func partTwo() {
 	f := getInput()
 	defer f.Close()
 
-	var a, b, c, d int
-	i := 0
-	inc := 0
+	var a, b, c, d, inc int
 	scanner := bufio.NewScanner(f)
-	for scanner.Scan() {
+	for i := 0; scanner.Scan(); i++ {
 		a, _ = strconv.Atoi(scanner.Text())
 		if i >= 3 {
 			if a > d {
@@ -60,7 +57,6 @@ func partTwo() {
 		d = c
 		c = b
 		b = a
-		i++
 	}
 
 	fmt.Println("Part two:", inc)

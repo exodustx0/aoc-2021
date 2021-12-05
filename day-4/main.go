@@ -18,14 +18,14 @@ type Board struct {
 	hasWon bool
 }
 
-func (board *Board) mark(value byte) {
+func (b *Board) mark(value byte) {
 	for y := 0; y < 5; y++ {
 		for x := 0; x < 5; x++ {
-			if board.cells[y][x].value == value {
-				board.cells[y][x].marked = true
-				board.marks++
-				if board.marks >= 5 {
-					board.checkWin()
+			if b.cells[y][x].value == value {
+				b.cells[y][x].marked = true
+				b.marks++
+				if b.marks >= 5 {
+					b.checkWin()
 				}
 				return
 			}
@@ -33,38 +33,38 @@ func (board *Board) mark(value byte) {
 	}
 }
 
-func (board *Board) checkWin() {
+func (b *Board) checkWin() {
 	for x := 0; x < 5; x++ {
 		for y := 0; y < 5; y++ {
-			if !board.cells[y][x].marked {
+			if !b.cells[y][x].marked {
 				break
 			}
 
 			if y == 4 {
-				board.hasWon = true
+				b.hasWon = true
 				return
 			}
 		}
 	}
 	for y := 0; y < 5; y++ {
 		for x := 0; x < 5; x++ {
-			if !board.cells[y][x].marked {
+			if !b.cells[y][x].marked {
 				break
 			}
 
 			if x == 4 {
-				board.hasWon = true
+				b.hasWon = true
 				return
 			}
 		}
 	}
 }
 
-func (board *Board) unmarkedSum() (sum int) {
+func (b *Board) unmarkedSum() (sum int) {
 	for y := 0; y < 5; y++ {
 		for x := 0; x < 5; x++ {
-			if !board.cells[y][x].marked {
-				sum += int(board.cells[y][x].value)
+			if !b.cells[y][x].marked {
+				sum += int(b.cells[y][x].value)
 			}
 		}
 	}
