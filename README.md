@@ -38,4 +38,8 @@ Especially since `*` is used for both multiplying and dereferencing, this is _mu
 
 ### Day 5
 
-When I first went most of the way through [A Tour of Go](https://go.dev/tour), I anticipated annoyance-to-come with how `if` conditions require brackets and there are no ternary conditions. The `(*Grid).drawLines` method that I wrote today made that come true. I tried to work around it by using a `switch` block and a label break, but any (significant) improvements in cleanliness were dashed by Go's formatter. I'm not saying it can't be done better; after all, I've only recently took the plunge into Go. But I'm very much worried that all I'll end up learning about this is "deal with it". I suppose time will tell.
+When I first went most of the way through [A Tour of Go](https://go.dev/tour), I anticipated annoyance-to-come with how `if` conditions require brackets and there are no ternary conditions. The `(*Grid).drawLines` method that I wrote today made that come true. I tried to work around it by using a `switch` block and a label break, but any (significant) improvements in cleanliness were dashed by Go's formatter. I'm not saying it can't be done better; after all, I've only recently taken the plunge into Go. But I'm very much worried that all I'll end up learning about this is "deal with it". I suppose time will tell.
+
+### Day 6
+
+Nice breather, this :) very enjoyable challenge today, and it resulted in quite nicely legible code in my opinion. Go shone brightly today for me!
