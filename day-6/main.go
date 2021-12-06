@@ -8,16 +8,18 @@ import (
 
 type FishTimers [9]int
 
-func (f *FishTimers) tick() {
-	newFish := f[0]
-	for i := 0; i < 8; i++ {
-		f[i] = f[i+1]
+func (f *FishTimers) tick(times int) {
+	for i := 0; i < times; i++ {
+		newFish := f[0]
+		for j := 0; j < 8; j++ {
+			f[j] = f[j+1]
+		}
+		f[8] = newFish
+		f[6] += newFish
 	}
-	f[8] = newFish
-	f[6] += newFish
 }
 
-func (f *FishTimers) count() int {
+func (f *FishTimers) numFishes() int {
 	count := 0
 	for i := 0; i < 9; i++ {
 		count += f[i]
@@ -45,25 +47,10 @@ func getInput() (fishTimers *FishTimers) {
 	return
 }
 
-func partOne() {
-	fishTimers := getInput()
-	for i := 0; i < 80; i++ {
-		fishTimers.tick()
-	}
-
-	println("Part one:", fishTimers.count())
-}
-
-func partTwo() {
-	fishTimers := getInput()
-	for i := 0; i < 256; i++ {
-		fishTimers.tick()
-	}
-
-	println("Part two:", fishTimers.count())
-}
-
 func main() {
-	partOne()
-	partTwo()
+	fishTimers := getInput()
+	fishTimers.tick(80)
+	println("Part one:", fishTimers.numFishes())
+	fishTimers.tick(256 - 80)
+	println("Part two:", fishTimers.numFishes())
 }
