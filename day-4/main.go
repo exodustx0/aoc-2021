@@ -71,7 +71,7 @@ func (b *Board) unmarkedSum() (sum int) {
 	return
 }
 
-func getInput() (*[]byte, *[]*Board) {
+func getInput() (calls *[]byte, boards *[]*Board) {
 	// f, err := os.Open("example.txt")
 	f, err := os.Open("input.txt")
 	if err != nil {
@@ -79,45 +79,33 @@ func getInput() (*[]byte, *[]*Board) {
 	}
 	defer f.Close()
 
-	calls := make([]byte, 0)
-	boards := make([]*Board, 0)
+	calls = new([]byte)
 	scanner := bufio.NewScanner(f)
 	scanner.Split(bufio.ScanWords)
 	scanner.Scan()
 	for _, valueStr := range strings.Split(scanner.Text(), ",") {
 		value, _ := strconv.Atoi(valueStr)
-		calls = append(calls, byte(value))
+		*calls = append(*calls, byte(value))
 	}
 
-	var x, y int
-	var board *Board
+	boards = new([]*Board)
 	for scanner.Scan() {
-		if x == 0 && y == 0 {
-			board = new(Board)
-		}
+		board := new(Board)
 
-		value, _ := strconv.Atoi(scanner.Text())
-		board.cells[y][x].value = byte(value)
-
-		x++
-		if x == 5 {
-			x = 0
-			y++
-			if y == 5 {
-				y = 0
+		for y := 0; y < 5; y++ {
+			for x := 0; x < 5; x++ {
+				if (x != 0 || y != 0) && !scanner.Scan() {
+					panic("Incomplete board")
+				}
+				value, _ := strconv.Atoi(scanner.Text())
+				board.cells[y][x].value = byte(value)
 			}
 		}
 
-		if x == 0 && y == 0 {
-			boards = append(boards, board)
-		}
+		*boards = append(*boards, board)
 	}
 
-	if x != 0 || y != 0 {
-		panic("Incomplete board")
-	}
-
-	return &calls, &boards
+	return
 }
 
 func partOne() {
@@ -137,13 +125,14 @@ func partOne() {
 func partTwo() {
 	calls, boards := getInput()
 
-	var lastBoard, lastCall int
-	for i, board := range *boards {
+	var lastBoard *Board
+	var lastCall int
+	for _, board := range *boards {
 		for call, value := range *calls {
 			board.mark(value)
 			if board.hasWon {
 				if call > lastCall {
-					lastBoard = i
+					lastBoard = board
 					lastCall = call
 				}
 				break
@@ -151,9 +140,7 @@ func partTwo() {
 		}
 	}
 
-	fmt.Println("Part two:", (*boards)[lastBoard].unmarkedSum()*int((*calls)[lastCall]))
-
-	fmt.Println((*boards)[lastBoard].unmarkedSum() * int((*calls)[lastCall]))
+	fmt.Println("Part two:", lastBoard.unmarkedSum()*int((*calls)[lastCall]))
 }
 
 func main() {

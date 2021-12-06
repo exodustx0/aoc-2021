@@ -51,14 +51,12 @@ func (l *Line) maxY() int {
 	}
 }
 
-type Grid struct {
-	cells [][]byte
-}
+type Grid [][]byte
 
 func (g *Grid) init(width, height int) {
-	g.cells = make([][]byte, height)
+	*g = make([][]byte, height)
 	for y := 0; y < height; y++ {
-		g.cells[y] = make([]byte, width)
+		(*g)[y] = make([]byte, width)
 	}
 }
 
@@ -69,7 +67,7 @@ func (g *Grid) drawLines(lines *[]Line) {
 		if y == line.to.y {
 			// Horizontal
 			for {
-				g.cells[y][x]++
+				(*g)[y][x]++
 
 				if x == line.to.x {
 					break
@@ -82,7 +80,7 @@ func (g *Grid) drawLines(lines *[]Line) {
 		} else if x == line.to.x {
 			// Vertical
 			for {
-				g.cells[y][x]++
+				(*g)[y][x]++
 
 				if y == line.to.y {
 					break
@@ -95,7 +93,7 @@ func (g *Grid) drawLines(lines *[]Line) {
 		} else {
 			// Diagonal (45 degrees)
 			for {
-				g.cells[y][x]++
+				(*g)[y][x]++
 
 				if y == line.to.y && x == line.to.x {
 					break
@@ -119,7 +117,7 @@ func (g *Grid) drawLines(lines *[]Line) {
 
 func (g *Grid) getOverlapCount() int {
 	var overlap int
-	for _, row := range g.cells {
+	for _, row := range *g {
 		for _, cell := range row {
 			if cell > 1 {
 				overlap++
@@ -132,7 +130,7 @@ func (g *Grid) getOverlapCount() int {
 
 // Used for debugging
 func (g *Grid) print() {
-	for _, row := range g.cells {
+	for _, row := range *g {
 		for _, cell := range row {
 			if cell == 0 {
 				fmt.Print(".")
@@ -176,8 +174,7 @@ func getInput(includeDiagonals bool) (lines *[]Line, width, height int) {
 				line.to = p2
 			}
 
-			newLine := append(*lines, line)
-			lines = &newLine
+			*lines = append(*lines, line)
 
 			if line.maxX() > width {
 				width = line.maxX()
