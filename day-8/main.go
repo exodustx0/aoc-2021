@@ -75,32 +75,31 @@ func (d *Display) decode() {
 		}
 	}
 
-	var zero, three, six, nine *Digit
+	var zero, six, nine *Digit
 	for _, digit := range unsortedDigits {
-		switch len(*digit) {
-		case 5:
-			if digit.fits(one) {
-				three = digit
-			}
-		case 6:
-			if !digit.fits(one) {
-				six = digit
-			} else if !digit.fits(four) {
-				zero = digit
-			} else {
-				nine = digit
-			}
-		}
-	}
-
-	var two, five *Digit
-	topRight := six.invert()[0]
-	for _, digit := range unsortedDigits {
-		if len(*digit) != 5 || digit == three {
+		if len(*digit) != 6 {
 			continue
 		}
 
-		if digit.includes(topRight) {
+		if !digit.fits(one) {
+			six = digit
+		} else if !digit.fits(four) {
+			zero = digit
+		} else {
+			nine = digit
+		}
+	}
+
+	var two, three, five *Digit
+	topRight := six.invert()[0]
+	for _, digit := range unsortedDigits {
+		if len(*digit) != 5 {
+			continue
+		}
+
+		if digit.fits(one) {
+			three = digit
+		} else if digit.includes(topRight) {
 			two = digit
 		} else {
 			five = digit
