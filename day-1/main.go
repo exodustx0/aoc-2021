@@ -2,55 +2,35 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"strconv"
 )
 
-func getInput() *os.File {
-	// f, err := os.Open("example.txt")
-	f, err := os.Open("input.txt")
+const (
+	// filename = "example.txt"
+	filename = "input.txt"
+)
+
+func main() {
+	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
 	}
-
-	return f
-}
-
-func partOne() {
-	f := getInput()
 	defer f.Close()
 
-	var a, b, inc int
-	first := true
-	scanner := bufio.NewScanner(f)
-	for scanner.Scan() {
-		a, _ = strconv.Atoi(scanner.Text())
-		if !first {
-			if a > b {
-				inc++
-			}
-		} else {
-			first = false
-		}
-
-		b = a
-	}
-
-	fmt.Println("Part one:", inc)
-}
-
-func partTwo() {
-	f := getInput()
-	defer f.Close()
-
-	var a, b, c, d, inc int
+	var a, b, c, d, inc, sumInc int
 	scanner := bufio.NewScanner(f)
 	for i := 0; scanner.Scan(); i++ {
 		a, _ = strconv.Atoi(scanner.Text())
-		if i >= 3 {
-			if a > d {
+
+		if i != 0 {
+			if a > b {
 				inc++
+			}
+			if i > 2 {
+				if a > d {
+					sumInc++
+				}
 			}
 		}
 
@@ -59,10 +39,6 @@ func partTwo() {
 		b = a
 	}
 
-	fmt.Println("Part two:", inc)
-}
-
-func main() {
-	partOne()
-	partTwo()
+	println("Part one:", inc)
+	println("Part two:", sumInc)
 }

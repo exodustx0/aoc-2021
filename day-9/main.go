@@ -7,6 +7,11 @@ import (
 	"strconv"
 )
 
+const (
+	// filename = "example.txt"
+	filename = "input.txt"
+)
+
 func multiplySlice(slice []int) int {
 	product := 1
 	for _, factor := range slice {
@@ -48,7 +53,7 @@ func (hm *Heightmap) getRiskLevelSum() int {
 }
 
 func (hm *Heightmap) getBasinNeighbors(c Coordinate) []Coordinate {
-	neighbors := make([]Coordinate, 0)
+	var neighbors []Coordinate
 	x := c.x
 	y := c.y
 	if x != 0 && hm.grid[y][x-1] != 9 {
@@ -77,7 +82,7 @@ func (hm *Heightmap) getBasin(c Coordinate, basin *Basin) {
 }
 
 func (hm *Heightmap) getBasinSizes() []int {
-	sizes := make([]int, 0)
+	var sizes []int
 	for _, lowPoint := range hm.lowPoints {
 		basin := Basin{lowPoint}
 		hm.getBasin(lowPoint, &basin)
@@ -90,8 +95,7 @@ func (hm *Heightmap) getBasinSizes() []int {
 }
 
 func getInput() (heightmap *Heightmap) {
-	// f, err := os.Open("example.txt")
-	f, err := os.Open("input.txt")
+	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -100,7 +104,7 @@ func getInput() (heightmap *Heightmap) {
 	heightmap = new(Heightmap)
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
-		row := make([]byte, 0)
+		var row []byte
 		for _, heightRune := range scanner.Text() {
 			height, err := strconv.Atoi(string(heightRune))
 			if err != nil {

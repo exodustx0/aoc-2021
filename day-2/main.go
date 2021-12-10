@@ -2,56 +2,23 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"strconv"
 )
 
-func getInput() *os.File {
-	// f, err := os.Open("example.txt")
-	f, err := os.Open("input.txt")
+const (
+	// filename = "example.txt"
+	filename = "input.txt"
+)
+
+func main() {
+	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
 	}
-
-	return f
-}
-
-func partOne() {
-	f := getInput()
 	defer f.Close()
 
-	var depth, pos int
-	scanner := bufio.NewScanner(f)
-	scanner.Split(bufio.ScanWords)
-	for scanner.Scan() {
-		op := scanner.Text()
-
-		if !scanner.Scan() {
-			panic("Invalid amount of tokens!")
-		}
-		a, _ := strconv.Atoi(scanner.Text())
-
-		switch op {
-		case "forward":
-			pos += a
-		case "down":
-			depth += a
-		case "up":
-			depth -= a
-		default:
-			panic(fmt.Sprintf("Invalid op %s!", op))
-		}
-	}
-
-	fmt.Println("Part one:", depth*pos)
-}
-
-func partTwo() {
-	f := getInput()
-	defer f.Close()
-
-	var depth, pos, aim int
+	var simpleDepth, depth, pos, aim int
 	scanner := bufio.NewScanner(f)
 	scanner.Split(bufio.ScanWords)
 	for scanner.Scan() {
@@ -67,18 +34,14 @@ func partTwo() {
 			pos += a
 			depth += a * aim
 		case "down":
+			simpleDepth += a
 			aim += a
 		case "up":
+			simpleDepth -= a
 			aim -= a
-		default:
-			panic(fmt.Sprintf("Invalid op %s!", op))
 		}
 	}
 
-	fmt.Println("Part two:", depth*pos)
-}
-
-func main() {
-	partOne()
-	partTwo()
+	println("Part one:", simpleDepth*pos)
+	println("Part two:", depth*pos)
 }

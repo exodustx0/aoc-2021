@@ -2,10 +2,14 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"strconv"
 	"strings"
+)
+
+const (
+	// filename = "example.txt"
+	filename = "input.txt"
 )
 
 type Cell struct {
@@ -72,8 +76,7 @@ func (b *Board) unmarkedSum() (sum int) {
 }
 
 func getInput() (calls *[]byte, boards *[]*Board) {
-	// f, err := os.Open("example.txt")
-	f, err := os.Open("input.txt")
+	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -115,7 +118,7 @@ func partOne() {
 		for _, board := range *boards {
 			board.mark(value)
 			if board.hasWon {
-				fmt.Println("Part one:", board.unmarkedSum()*int(value))
+				println("Part one:", board.unmarkedSum()*int(value))
 				return
 			}
 		}
@@ -140,7 +143,7 @@ func partTwo() {
 		}
 	}
 
-	fmt.Println("Part two:", lastBoard.unmarkedSum()*int((*calls)[lastCall]))
+	println("Part two:", lastBoard.unmarkedSum()*int((*calls)[lastCall]))
 }
 
 func main() {

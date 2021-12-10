@@ -2,15 +2,18 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"sort"
 	"strconv"
 )
 
+const (
+	// filename = "example.txt"
+	filename = "input.txt"
+)
+
 func getInput() *os.File {
-	// f, err := os.Open("example.txt")
-	f, err := os.Open("input.txt")
+	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -48,7 +51,7 @@ func partOne() {
 		}
 	}
 
-	fmt.Println("Part one:", gamma*epsilon)
+	println("Part one:", gamma*epsilon)
 }
 
 func partTwo() {
@@ -65,8 +68,7 @@ func partTwo() {
 
 		value, err := strconv.ParseUint(scanner.Text(), 2, 0)
 		if err != nil {
-			fmt.Println(err.Error())
-			return
+			panic(err.Error())
 		}
 
 		values = append(values, int(value))
@@ -125,7 +127,7 @@ func partTwo() {
 		}
 	}
 
-	fmt.Println("Part two:", oxygen[0]*co2[0])
+	println("Part two:", oxygen[0]*co2[0])
 }
 
 func main() {

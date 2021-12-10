@@ -2,10 +2,14 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"strconv"
 	"strings"
+)
+
+const (
+	// filename = "example.txt"
+	filename = "input.txt"
 )
 
 type Point struct {
@@ -133,18 +137,17 @@ func (g *Grid) print() {
 	for _, row := range *g {
 		for _, cell := range row {
 			if cell == 0 {
-				fmt.Print(".")
+				print(".")
 			} else {
-				fmt.Print(cell)
+				print(cell)
 			}
 		}
-		fmt.Print("\n")
+		print("\n")
 	}
 }
 
 func getInput(includeDiagonals bool) (lines *[]Line, width, height int) {
-	// f, err := os.Open("example.txt")
-	f, err := os.Open("input.txt")
+	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -196,7 +199,7 @@ func partOne() {
 	var grid Grid
 	grid.init(width, height)
 	grid.drawLines(lines)
-	fmt.Println("Part one:", grid.getOverlapCount())
+	println("Part one:", grid.getOverlapCount())
 }
 
 func partTwo() {
@@ -205,7 +208,7 @@ func partTwo() {
 	var grid Grid
 	grid.init(width, height)
 	grid.drawLines(lines)
-	fmt.Println("Part two:", grid.getOverlapCount())
+	println("Part two:", grid.getOverlapCount())
 }
 
 func main() {

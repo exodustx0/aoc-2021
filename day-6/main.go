@@ -6,6 +6,11 @@ import (
 	"strings"
 )
 
+const (
+	// filename = "example.txt"
+	filename = "input.txt"
+)
+
 type FishTimers [9]int
 
 func (f *FishTimers) tick(times int) {
@@ -28,8 +33,7 @@ func (f *FishTimers) numFishes() int {
 }
 
 func getInput() (fishTimers *FishTimers) {
-	// content, err := os.ReadFile("example.txt")
-	content, err := os.ReadFile("input.txt")
+	content, err := os.ReadFile(filename)
 	if err != nil {
 		panic(err.Error())
 	}

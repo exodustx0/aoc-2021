@@ -7,6 +7,11 @@ import (
 	"strings"
 )
 
+const (
+	// filename = "example.txt"
+	filename = "input.txt"
+)
+
 func abs(x int) int {
 	if x < 0 {
 		return -x
@@ -33,8 +38,7 @@ func (c *Crabs) leastFuelNeededToAlign(min, max int, f func(x int) int) int {
 }
 
 func getInput() (crabs *Crabs, min, max int) {
-	// content, err := os.ReadFile("example.txt")
-	content, err := os.ReadFile("input.txt")
+	content, err := os.ReadFile(filename)
 	if err != nil {
 		panic(err.Error())
 	}

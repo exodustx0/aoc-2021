@@ -6,6 +6,11 @@ import (
 	"os"
 )
 
+const (
+	// filename = "example.txt"
+	filename = "input.txt"
+)
+
 type Digit []rune
 
 func (d *Digit) equals(d2 *Digit) bool {
@@ -44,7 +49,7 @@ func (d *Digit) fits(d2 *Digit) bool {
 }
 
 func (d *Digit) invert() Digit {
-	inverted := make(Digit, 0)
+	var inverted Digit
 	for _, s := range "abcdefg" {
 		if !d.includes(s) {
 			inverted = append(inverted, s)
@@ -154,8 +159,7 @@ func (d *Displays) countValues() int {
 }
 
 func getInput() (displays *Displays) {
-	// f, err := os.Open("example.txt")
-	f, err := os.Open("input.txt")
+	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
 	}
