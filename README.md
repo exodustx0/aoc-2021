@@ -32,7 +32,7 @@ Dunno about you, but that reads like yikes to me. I'm a big proponent for space-
 (*boards)[lastBoard].unmarkedSum() * int((*calls)[lastCall])
 ```
 
-Especially since `*` is used for both multiplying and dereferencing, this is _much_ more legible to me. Note that Go will format to this only when this expression is _one_ of the arguments to a function call; for some reason, however, it'll actually format to the _space-separated_ version if it's the only argument in a function call. I guess that Go wants spaces to separate both arguments and expression tokens. One space-separation to rule them all.
+Especially since `*` is used for both multiplying and dereferencing, this is _much_ more legible to me. Note that Go will format to this only when this expression is _one_ of the arguments to a function call; for some reason, however, it'll actually format to the _space-separated_ version if it's the only argument in a function call. I guess that Go wants spaces to separate arguments _or_ expression tokens, but never both at the same time. One space-separation to rule them all.
 
 (Also, in case it comes up at some point: I'm not averse to going back and reworking previous days' code. I'm a perfectionist. Posterity can still have the commit history!)
 
