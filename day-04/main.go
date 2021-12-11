@@ -93,7 +93,7 @@ func getInput() (calls *[]byte, boards *[]*Board) {
 
 	boards = new([]*Board)
 	for scanner.Scan() {
-		board := new(Board)
+		board := Board{}
 
 		for y := 0; y < 5; y++ {
 			for x := 0; x < 5; x++ {
@@ -105,7 +105,7 @@ func getInput() (calls *[]byte, boards *[]*Board) {
 			}
 		}
 
-		*boards = append(*boards, board)
+		*boards = append(*boards, &board)
 	}
 
 	return

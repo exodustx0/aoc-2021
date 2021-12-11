@@ -184,10 +184,9 @@ func getInput() (displays *Displays) {
 				continue
 			}
 
-			digit := new(Digit)
-			*digit = Digit(scanner.Text())
+			digit := Digit(scanner.Text())
 			if i < 10 {
-				digits[i] = digit
+				digits[i] = &digit
 			} else {
 				for _, digitPtr := range digits {
 					if digit.equals(digitPtr) {

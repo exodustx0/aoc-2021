@@ -157,24 +157,24 @@ func getInput(includeDiagonals bool) (lines *[]Line, width, height int) {
 	scanner := bufio.NewScanner(f)
 	scanner.Split(bufio.ScanWords)
 	for scanner.Scan() {
-		p1 := new(Point)
+		p1 := Point{}
 		p1.parse(scanner.Text())
 
 		if !scanner.Scan() || scanner.Text() != "->" || !scanner.Scan() {
 			panic("Malformed input")
 		}
 
-		p2 := new(Point)
+		p2 := Point{}
 		p2.parse(scanner.Text())
 
 		if includeDiagonals || p1.x == p2.x || p1.y == p2.y {
 			var line Line
 			if p1.x > p2.x || p1.y > p2.y {
-				line.from = p2
-				line.to = p1
+				line.from = &p2
+				line.to = &p1
 			} else {
-				line.from = p1
-				line.to = p2
+				line.from = &p1
+				line.to = &p2
 			}
 
 			*lines = append(*lines, line)
