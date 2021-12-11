@@ -49,3 +49,7 @@ Nice breather, this :) very enjoyable challenge today, and it resulted in quite 
 OK, today's puzzle got involved. I'm liking this. I'm not fully confident that what I wrote is optimal, especially concerning the handling of pointers (I'm still somewhat new to working with them directly), but I got through it and had fun doing it.
 
 With regards to the pointer stuff, I should probably look into ways to get memory metrics, so I can try different stuff, see how much memory they take. So I can tell if I'm doing the right thing, in terms of learning the right habits regarding using pointers.
+
+### Day 11
+
+Welp. I sure used `goto`. Please forgive me.
