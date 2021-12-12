@@ -53,3 +53,7 @@ With regards to the pointer stuff, I should probably look into ways to get memor
 ### Day 11
 
 Welp. I sure used `goto`. Please forgive me.
+
+### Day 12
+
+I feel like I've got the hang of Go now. At that, I've also come to terms with how Go can, at times, get to look verbose (as I described on [day 5](#day-5)); after all, Go is more similar to C than to, say, TypeScript (yep, that's my frame of reference). I can see myself using this for real-world stuff.
