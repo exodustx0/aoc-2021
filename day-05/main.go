@@ -7,11 +7,6 @@ import (
 	"strings"
 )
 
-const (
-	// filename = "example.txt"
-	filename = "input.txt"
-)
-
 type Point struct {
 	x, y int
 }
@@ -146,7 +141,7 @@ func (g *Grid) print() {
 	}
 }
 
-func getInput(includeDiagonals bool) (lines *[]Line, width, height int) {
+func getInput(filename string, includeDiagonals bool) (lines *[]Line, width, height int) {
 	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
@@ -193,25 +188,28 @@ func getInput(includeDiagonals bool) (lines *[]Line, width, height int) {
 	return
 }
 
-func partOne() {
-	lines, width, height := getInput(false)
+func partOne(filename string) {
+	lines, width, height := getInput(filename, false)
 
 	var grid Grid
 	grid.init(width, height)
 	grid.drawLines(lines)
-	println("Part one:", grid.getOverlapCount())
+	println("\tPart one:", grid.getOverlapCount())
 }
 
-func partTwo() {
-	lines, width, height := getInput(true)
+func partTwo(filename string) {
+	lines, width, height := getInput(filename, true)
 
 	var grid Grid
 	grid.init(width, height)
 	grid.drawLines(lines)
-	println("Part two:", grid.getOverlapCount())
+	println("\tPart two:", grid.getOverlapCount())
 }
 
 func main() {
-	partOne()
-	partTwo()
+	for _, filename := range []string{"example.txt", "input.txt"} {
+		println(filename)
+		partOne(filename)
+		partTwo(filename)
+	}
 }

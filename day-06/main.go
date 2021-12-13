@@ -6,11 +6,6 @@ import (
 	"strings"
 )
 
-const (
-	// filename = "example.txt"
-	filename = "input.txt"
-)
-
 type FishTimers [9]int
 
 func (f *FishTimers) tick(times int) {
@@ -32,7 +27,7 @@ func (f *FishTimers) numFishes() int {
 	return count
 }
 
-func getInput() (fishTimers *FishTimers) {
+func getInput(filename string) (fishTimers *FishTimers) {
 	content, err := os.ReadFile(filename)
 	if err != nil {
 		panic(err.Error())
@@ -52,9 +47,13 @@ func getInput() (fishTimers *FishTimers) {
 }
 
 func main() {
-	fishTimers := getInput()
-	fishTimers.tick(80)
-	println("Part one:", fishTimers.numFishes())
-	fishTimers.tick(256 - 80)
-	println("Part two:", fishTimers.numFishes())
+	for _, filename := range []string{"example.txt", "input.txt"} {
+		println(filename)
+
+		fishTimers := getInput(filename)
+		fishTimers.tick(80)
+		println("\tPart one:", fishTimers.numFishes())
+		fishTimers.tick(256 - 80)
+		println("\tPart two:", fishTimers.numFishes())
+	}
 }

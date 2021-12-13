@@ -7,11 +7,6 @@ import (
 	"strings"
 )
 
-const (
-	// filename = "example.txt"
-	filename = "input.txt"
-)
-
 type Cell struct {
 	value  byte
 	marked bool
@@ -75,7 +70,7 @@ func (b *Board) unmarkedSum() (sum int) {
 	return
 }
 
-func getInput() (calls *[]byte, boards *[]*Board) {
+func getInput(filename string) (calls *[]byte, boards *[]*Board) {
 	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
@@ -111,22 +106,22 @@ func getInput() (calls *[]byte, boards *[]*Board) {
 	return
 }
 
-func partOne() {
-	calls, boards := getInput()
+func partOne(filename string) {
+	calls, boards := getInput(filename)
 
 	for _, value := range *calls {
 		for _, board := range *boards {
 			board.mark(value)
 			if board.hasWon {
-				println("Part one:", board.unmarkedSum()*int(value))
+				println("\tPart one:", board.unmarkedSum()*int(value))
 				return
 			}
 		}
 	}
 }
 
-func partTwo() {
-	calls, boards := getInput()
+func partTwo(filename string) {
+	calls, boards := getInput(filename)
 
 	var lastBoard *Board
 	var lastCall int
@@ -143,10 +138,13 @@ func partTwo() {
 		}
 	}
 
-	println("Part two:", lastBoard.unmarkedSum()*int((*calls)[lastCall]))
+	println("\tPart two:", lastBoard.unmarkedSum()*int((*calls)[lastCall]))
 }
 
 func main() {
-	partOne()
-	partTwo()
+	for _, filename := range []string{"example.txt", "input.txt"} {
+		println(filename)
+		partOne(filename)
+		partTwo(filename)
+	}
 }

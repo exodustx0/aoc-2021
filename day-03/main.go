@@ -7,12 +7,7 @@ import (
 	"strconv"
 )
 
-const (
-	// filename = "example.txt"
-	filename = "input.txt"
-)
-
-func getInput() *os.File {
+func getInput(filename string) *os.File {
 	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
@@ -21,8 +16,8 @@ func getInput() *os.File {
 	return f
 }
 
-func partOne() {
-	f := getInput()
+func partOne(filename string) {
+	f := getInput(filename)
 	defer f.Close()
 
 	var bits []int
@@ -51,11 +46,11 @@ func partOne() {
 		}
 	}
 
-	println("Part one:", gamma*epsilon)
+	println("\tPart one:", gamma*epsilon)
 }
 
-func partTwo() {
-	f := getInput()
+func partTwo(filename string) {
+	f := getInput(filename)
 	defer f.Close()
 
 	var values []int
@@ -127,10 +122,13 @@ func partTwo() {
 		}
 	}
 
-	println("Part two:", oxygen[0]*co2[0])
+	println("\tPart two:", oxygen[0]*co2[0])
 }
 
 func main() {
-	partOne()
-	partTwo()
+	for _, filename := range []string{"example.txt", "input.txt"} {
+		println(filename)
+		partOne(filename)
+		partTwo(filename)
+	}
 }

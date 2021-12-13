@@ -6,11 +6,6 @@ import (
 	"os"
 )
 
-const (
-	// filename = "example.txt"
-	filename = "input.txt"
-)
-
 type Digit []rune
 
 func (d *Digit) equals(d2 *Digit) bool {
@@ -158,7 +153,7 @@ func (d *Displays) countValues() int {
 	return count
 }
 
-func getInput() (displays *Displays) {
+func getInput(filename string) (displays *Displays) {
 	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
@@ -206,7 +201,11 @@ func getInput() (displays *Displays) {
 }
 
 func main() {
-	displays := getInput()
-	println("Part one:", displays.countEasyDigits())
-	println("Part two:", displays.countValues())
+	for _, filename := range []string{"example.txt", "input.txt"} {
+		println(filename)
+
+		displays := getInput(filename)
+		println("\tPart one:", displays.countEasyDigits())
+		println("\tPart two:", displays.countValues())
+	}
 }

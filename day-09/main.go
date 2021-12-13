@@ -7,11 +7,6 @@ import (
 	"strconv"
 )
 
-const (
-	// filename = "example.txt"
-	filename = "input.txt"
-)
-
 func multiplySlice(slice []int) int {
 	product := 1
 	for _, factor := range slice {
@@ -94,7 +89,7 @@ func (hm *Heightmap) getBasinSizes() []int {
 	return sizes
 }
 
-func getInput() (heightmap *Heightmap) {
+func getInput(filename string) (heightmap *Heightmap) {
 	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
@@ -140,7 +135,11 @@ func getInput() (heightmap *Heightmap) {
 }
 
 func main() {
-	heightmap := getInput()
-	println("Part one:", heightmap.getRiskLevelSum())
-	println("Part two:", multiplySlice(heightmap.getBasinSizes()[:3]))
+	for _, filename := range []string{"example.txt", "input.txt"} {
+		println(filename)
+
+		heightmap := getInput(filename)
+		println("\tPart one:", heightmap.getRiskLevelSum())
+		println("\tPart two:", multiplySlice(heightmap.getBasinSizes()[:3]))
+	}
 }

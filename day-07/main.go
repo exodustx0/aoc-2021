@@ -7,11 +7,6 @@ import (
 	"strings"
 )
 
-const (
-	// filename = "example.txt"
-	filename = "input.txt"
-)
-
 func abs(x int) int {
 	if x < 0 {
 		return -x
@@ -37,7 +32,7 @@ func (c *Crabs) leastFuelNeededToAlign(min, max int, f func(x int) int) int {
 	return leastFuelNeeded
 }
 
-func getInput() (crabs *Crabs, min, max int) {
+func getInput(filename string) (crabs *Crabs, min, max int) {
 	content, err := os.ReadFile(filename)
 	if err != nil {
 		panic(err.Error())
@@ -68,13 +63,17 @@ func getInput() (crabs *Crabs, min, max int) {
 }
 
 func main() {
-	crabs, min, max := getInput()
+	for _, filename := range []string{"example.txt", "input.txt"} {
+		println(filename)
 
-	println("Part one:", crabs.leastFuelNeededToAlign(min, max, func(x int) int {
-		return x
-	}))
+		crabs, min, max := getInput(filename)
 
-	println("Part two:", crabs.leastFuelNeededToAlign(min, max, func(x int) int {
-		return (x * (x + 1)) / 2
-	}))
+		println("\tPart one:", crabs.leastFuelNeededToAlign(min, max, func(x int) int {
+			return x
+		}))
+
+		println("\tPart two:", crabs.leastFuelNeededToAlign(min, max, func(x int) int {
+			return (x * (x + 1)) / 2
+		}))
+	}
 }

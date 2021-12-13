@@ -5,11 +5,6 @@ import (
 	"os"
 )
 
-const (
-	filename = "example.txt"
-	// filename = "input.txt"
-)
-
 type Octopus struct {
 	start, level byte
 	flashes      int
@@ -72,7 +67,7 @@ func (g *Grid) print() {
 	}
 }
 
-func getInput() (grid *Grid) {
+func getInput(filename string) (grid *Grid) {
 	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
@@ -129,23 +124,27 @@ func getInput() (grid *Grid) {
 }
 
 func main() {
-	grid := getInput()
-	grid.reset()
-	grid.step(100)
-	println("Part one:", grid.countFlashes())
+	for _, filename := range []string{"example.txt", "input.txt"} {
+		println(filename)
 
-	var i int
-	grid.reset()
-loop:
-	i++
-	grid.step(1)
-	for _, row := range grid {
-		for _, octopus := range row {
-			if octopus.level != 0 {
-				goto loop
+		grid := getInput(filename)
+		grid.reset()
+		grid.step(100)
+		println("\tPart one:", grid.countFlashes())
+
+		var i int
+		grid.reset()
+	loop:
+		i++
+		grid.step(1)
+		for _, row := range grid {
+			for _, octopus := range row {
+				if octopus.level != 0 {
+					goto loop
+				}
 			}
 		}
-	}
 
-	println("Part two:", i)
+		println("\tPart two:", i)
+	}
 }

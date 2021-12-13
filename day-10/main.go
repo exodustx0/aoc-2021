@@ -9,9 +9,6 @@ import (
 )
 
 const (
-	// filename = "example.txt"
-	filename = "input.txt"
-
 	open   = "([{<"
 	closed = ")]}>"
 )
@@ -66,7 +63,7 @@ lineLoop:
 	return
 }
 
-func getInput() (lines *NavigationSubsystem) {
+func getInput(filename string) (lines *NavigationSubsystem) {
 	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
@@ -83,8 +80,12 @@ func getInput() (lines *NavigationSubsystem) {
 }
 
 func main() {
-	lines := getInput()
-	errorScore, middleScore := lines.parse()
-	println("Part one:", errorScore)
-	println("Part two:", middleScore)
+	for _, filename := range []string{"example.txt", "input.txt"} {
+		println(filename)
+
+		lines := getInput(filename)
+		errorScore, middleScore := lines.parse()
+		println("\tPart one:", errorScore)
+		println("\tPart two:", middleScore)
+	}
 }
