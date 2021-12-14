@@ -41,12 +41,7 @@ func (p *Polymer) getElementCountRange() int {
 	elementCounts := make(map[byte]int)
 	for pair, pairCount := range p.pairs {
 		for _, element := range pair {
-			count, ok := elementCounts[element]
-			if ok {
-				elementCounts[element] = count + pairCount
-			} else {
-				elementCounts[element] = pairCount
-			}
+			elementCounts[element] += pairCount
 		}
 	}
 
@@ -98,12 +93,7 @@ func getInput(filename string) *Polymer {
 	}
 	for i := 0; i < chainLength-1; i++ {
 		pair := Pair{chain[i], chain[i+1]}
-		_, ok := polymer.pairs[pair]
-		if ok {
-			polymer.pairs[pair]++
-		} else {
-			polymer.pairs[pair] = 1
-		}
+		polymer.pairs[pair]++
 	}
 
 	for scanner.Scan() {
