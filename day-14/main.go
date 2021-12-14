@@ -14,9 +14,9 @@ type InsertionRule struct {
 }
 
 type Polymer struct {
-	start, end byte
-	pairs      map[Pair]int
-	rules      []InsertionRule
+	last  byte
+	pairs map[Pair]int
+	rules []InsertionRule
 }
 
 func (p *Polymer) step(times int) {
@@ -40,20 +40,10 @@ func (p *Polymer) step(times int) {
 func (p *Polymer) getElementCountRange() int {
 	elementCounts := make(map[byte]int)
 	for pair, pairCount := range p.pairs {
-		for _, element := range pair {
-			elementCounts[element] += pairCount
-		}
+		elementCounts[pair[0]] += pairCount
 	}
 
-	elementCounts[p.start]--
-	elementCounts[p.end]--
-
-	for element := range elementCounts {
-		elementCounts[element] /= 2
-	}
-
-	elementCounts[p.start]++
-	elementCounts[p.end]++
+	elementCounts[p.last]++
 
 	min := math.MaxInt
 	max := 0
@@ -83,8 +73,7 @@ func getInput(filename string) (polymer *Polymer) {
 	chainLength := len(chain)
 
 	polymer = &Polymer{
-		start: chain[0],
-		end:   chain[chainLength-1],
+		last:  chain[chainLength-1],
 		pairs: make(map[Pair]int),
 	}
 	for i := 0; i < chainLength-1; i++ {
