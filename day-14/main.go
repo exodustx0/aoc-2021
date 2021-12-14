@@ -45,15 +45,11 @@ func (p *Polymer) getElementCountRange() int {
 		}
 	}
 
-	for element, count := range elementCounts {
-		if element == p.start {
-			count--
-		}
-		if element == p.end {
-			count--
-		}
+	elementCounts[p.start]--
+	elementCounts[p.end]--
 
-		elementCounts[element] = count / 2
+	for element := range elementCounts {
+		elementCounts[element] /= 2
 	}
 
 	elementCounts[p.start]++
@@ -73,7 +69,7 @@ func (p *Polymer) getElementCountRange() int {
 	return max - min
 }
 
-func getInput(filename string) *Polymer {
+func getInput(filename string) (polymer *Polymer) {
 	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
@@ -86,14 +82,13 @@ func getInput(filename string) *Polymer {
 	chain := scanner.Text()
 	chainLength := len(chain)
 
-	polymer := Polymer{
+	polymer = &Polymer{
 		start: chain[0],
 		end:   chain[chainLength-1],
 		pairs: make(map[Pair]int),
 	}
 	for i := 0; i < chainLength-1; i++ {
-		pair := Pair{chain[i], chain[i+1]}
-		polymer.pairs[pair]++
+		polymer.pairs[Pair{chain[i], chain[i+1]}]++
 	}
 
 	for scanner.Scan() {
@@ -106,7 +101,7 @@ func getInput(filename string) *Polymer {
 		polymer.rules = append(polymer.rules, InsertionRule{pair, to})
 	}
 
-	return &polymer
+	return
 }
 
 func main() {
