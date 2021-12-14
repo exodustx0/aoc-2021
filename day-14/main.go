@@ -85,16 +85,17 @@ func getInput(filename string) *Polymer {
 	}
 	defer f.Close()
 
-	var polymer Polymer
 	scanner := bufio.NewScanner(f)
 	scanner.Split(bufio.ScanWords)
-
 	scanner.Scan()
 	chain := scanner.Text()
 	chainLength := len(chain)
-	polymer.start = chain[0]
-	polymer.end = chain[chainLength-1]
-	polymer.pairs = make(map[Pair]int)
+
+	polymer := Polymer{
+		start: chain[0],
+		end:   chain[chainLength-1],
+		pairs: make(map[Pair]int),
+	}
 	for i := 0; i < chainLength-1; i++ {
 		pair := Pair{chain[i], chain[i+1]}
 		_, ok := polymer.pairs[pair]
@@ -107,7 +108,7 @@ func getInput(filename string) *Polymer {
 
 	for scanner.Scan() {
 		pairStr := scanner.Text()
-		scanner.Scan() // arrow
+		scanner.Scan() // Arrow
 		scanner.Scan()
 		pair := Pair{pairStr[0], pairStr[1]}
 		to := scanner.Text()[0]

@@ -21,10 +21,7 @@ func main() {
 		scanner.Split(bufio.ScanWords)
 		for scanner.Scan() {
 			op := scanner.Text()
-
-			if !scanner.Scan() {
-				panic("Invalid amount of tokens!")
-			}
+			scanner.Scan()
 			a, _ := strconv.Atoi(scanner.Text())
 
 			switch op {

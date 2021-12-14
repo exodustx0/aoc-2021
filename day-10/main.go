@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"sort"
 	"strings"
@@ -16,10 +15,10 @@ const (
 type NavigationSubsystem [][]rune
 
 func (ns *NavigationSubsystem) parse() (errorScore, middleScore int) {
-	autoCompleteScores := make([]int, 0)
+	var autoCompleteScores []int
 lineLoop:
 	for _, line := range *ns {
-		chunks := make([]rune, 0)
+		var chunks []rune
 		for _, c := range line {
 			switch {
 			case strings.ContainsRune(open, c):
@@ -41,8 +40,6 @@ lineLoop:
 					continue lineLoop
 				}
 				chunks = chunks[:len(chunks)-1]
-			default:
-				panic(fmt.Sprintf("Illegal character %c", c))
 			}
 		}
 

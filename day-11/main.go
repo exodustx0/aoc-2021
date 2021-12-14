@@ -28,16 +28,16 @@ func (o *Octopus) flash() {
 
 type Grid [10][10]*Octopus
 
-func (g *Grid) reset() {
-	g.forEachOctopus(func(octopus *Octopus) { octopus.level = octopus.start })
-}
-
 func (g *Grid) forEachOctopus(f func(octopus *Octopus)) {
 	for _, row := range *g {
 		for _, octopus := range row {
 			f(octopus)
 		}
 	}
+}
+
+func (g *Grid) reset() {
+	g.forEachOctopus(func(octopus *Octopus) { octopus.level = octopus.start })
 }
 
 func (g *Grid) step(times int) {
@@ -78,17 +78,9 @@ func getInput(filename string) (grid *Grid) {
 	grid = new(Grid)
 	scanner := bufio.NewScanner(f)
 	for ; scanner.Scan(); y++ {
-		if len(scanner.Text()) != 10 {
-			panic("Malformed input, not 10x10 grid")
-		}
-
 		for x, level := range scanner.Text() {
 			grid[y][x] = &Octopus{start: byte(level - '0')}
 		}
-	}
-
-	if y != 10 {
-		panic("Malformed input, not 10x10 grid")
 	}
 
 	for y, row := range grid {

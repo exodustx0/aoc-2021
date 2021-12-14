@@ -55,9 +55,9 @@ func (cs *CaveSystem) countPaths(extra bool) (count int) {
 		case !cave.big && path.alreadyVisited(cave):
 			if !extra || visitedSmallTwice {
 				return false
-			} else {
-				visitedSmallTwice = true
 			}
+
+			visitedSmallTwice = true
 		}
 
 		path = append(path, cave)
@@ -81,8 +81,8 @@ func getInput(filename string) *CaveSystem {
 	}
 	defer f.Close()
 
+	var connection [2]*Cave
 	system := make(CaveSystem)
-	connection := [2]*Cave{}
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
 		for i, name := range strings.Split(scanner.Text(), "-") {

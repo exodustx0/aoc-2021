@@ -65,7 +65,7 @@ func (p *Paper) print() {
 			if cell {
 				print("█")
 			} else {
-				print(" ")
+				print("░")
 			}
 		}
 		print("\n")
@@ -84,10 +84,10 @@ func getInput(filename string) (*Paper, *[]Fold) {
 	defer f.Close()
 
 	var width, height int
+	var folds []Fold
+	var dots []Dot
 	scanner := bufio.NewScanner(f)
 	gettingFolds := false
-	dots := []Dot{}
-	folds := make([]Fold, 0)
 	for scanner.Scan() {
 		line := scanner.Text()
 		if len(line) == 0 {
@@ -112,7 +112,7 @@ func getInput(filename string) (*Paper, *[]Fold) {
 			continue
 		}
 
-		line = line[11:]
+		line = line[11:] // Slice off "fold along "
 		position, _ := strconv.Atoi(line[2:])
 		axis := rune(line[0])
 		folds = append(folds, Fold{position, axis})

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"math"
 	"os"
+	"strings"
 )
 
 type Digit []rune
@@ -43,16 +44,6 @@ func (d *Digit) fits(d2 *Digit) bool {
 	return true
 }
 
-func (d *Digit) invert() Digit {
-	var inverted Digit
-	for _, s := range "abcdefg" {
-		if !d.includes(s) {
-			inverted = append(inverted, s)
-		}
-	}
-	return inverted
-}
-
 type Display struct {
 	digits [10]*Digit
 	output [4]*Digit
@@ -90,8 +81,15 @@ func (d *Display) decode() {
 		}
 	}
 
+	var topRight rune
+	for _, s := range "abcdefg" {
+		if !six.includes(s) {
+			topRight = s
+			break
+		}
+	}
+
 	var two, three, five *Digit
-	topRight := six.invert()[0]
 	for _, digit := range unsortedDigits {
 		if len(*digit) != 5 {
 			continue
@@ -109,8 +107,7 @@ func (d *Display) decode() {
 	d.digits = [10]*Digit{zero, one, two, three, four, five, six, seven, eight, nine}
 }
 
-func (d *Display) getValue() int {
-	var value int
+func (d *Display) getValue() (value int) {
 	for i, digit := range d.output {
 		var number int
 		for j, digit2 := range d.digits {
@@ -123,13 +120,12 @@ func (d *Display) getValue() int {
 		value += number * int(math.Pow(10, float64(3-i)))
 	}
 
-	return value
+	return
 }
 
 type Displays []Display
 
-func (d *Displays) countEasyDigits() int {
-	var count int
+func (d *Displays) countEasyDigits() (count int) {
 	for _, display := range *d {
 		for _, digitPtr := range display.output {
 			if digitPtr == display.digits[1] ||
@@ -141,16 +137,15 @@ func (d *Displays) countEasyDigits() int {
 		}
 	}
 
-	return count
+	return
 }
 
-func (d *Displays) countValues() int {
-	var count int
+func (d *Displays) countValues() (count int) {
 	for _, display := range *d {
 		count += display.getValue()
 	}
 
-	return count
+	return
 }
 
 func getInput(filename string) (displays *Displays) {
@@ -162,32 +157,20 @@ func getInput(filename string) (displays *Displays) {
 
 	displays = new(Displays)
 	scanner := bufio.NewScanner(f)
-	scanner.Split(bufio.ScanWords)
 	for scanner.Scan() {
-		digits := [10]*Digit{}
-		output := [4]*Digit{}
-		for i := 0; i < 15; i++ {
-			if i != 0 && !scanner.Scan() {
-				panic("Incomplete sequence of digits")
-			}
+		line := strings.Split(scanner.Text(), " ")
+		var digits [10]*Digit
+		for i, digitStr := range line[:10] {
+			digit := Digit(digitStr)
+			digits[i] = &digit
+		}
 
-			if i == 10 {
-				if scanner.Text() != "|" {
-					panic("Malformed input")
-				}
-
-				continue
-			}
-
-			digit := Digit(scanner.Text())
-			if i < 10 {
-				digits[i] = &digit
-			} else {
-				for _, digitPtr := range digits {
-					if digit.equals(digitPtr) {
-						output[i-11] = digitPtr
-						break
-					}
+		var output [4]*Digit
+		for i, digitStr := range line[11:] {
+			digit := Digit(digitStr)
+			for _, digitPtr := range digits {
+				if digit.equals(digitPtr) {
+					output[i] = digitPtr
 				}
 			}
 		}

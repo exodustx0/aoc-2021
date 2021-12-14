@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func multiplySlice(slice []int) int {
+func product(slice []int) int {
 	product := 1
 	for _, factor := range slice {
 		product *= factor
@@ -38,13 +38,12 @@ type Heightmap struct {
 	lowPoints     []Coordinate
 }
 
-func (hm *Heightmap) getRiskLevelSum() int {
-	var riskLevelSum int
+func (hm *Heightmap) getRiskLevelSum() (sum int) {
 	for _, lowPoint := range hm.lowPoints {
-		riskLevelSum += int(1 + hm.grid[lowPoint.y][lowPoint.x])
+		sum += 1 + int(hm.grid[lowPoint.y][lowPoint.x])
 	}
 
-	return riskLevelSum
+	return
 }
 
 func (hm *Heightmap) getBasinNeighbors(c Coordinate) []Coordinate {
@@ -101,10 +100,7 @@ func getInput(filename string) (heightmap *Heightmap) {
 	for scanner.Scan() {
 		var row []byte
 		for _, heightRune := range scanner.Text() {
-			height, err := strconv.Atoi(string(heightRune))
-			if err != nil {
-				panic(err.Error())
-			}
+			height, _ := strconv.Atoi(string(heightRune))
 			row = append(row, byte(height))
 		}
 		heightmap.grid = append(heightmap.grid, row)
@@ -140,6 +136,6 @@ func main() {
 
 		heightmap := getInput(filename)
 		println("\tPart one:", heightmap.getRiskLevelSum())
-		println("\tPart two:", multiplySlice(heightmap.getBasinSizes()[:3]))
+		println("\tPart two:", product(heightmap.getBasinSizes()[:3]))
 	}
 }

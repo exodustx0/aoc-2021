@@ -11,10 +11,21 @@ type Cell struct {
 	value  byte
 	marked bool
 }
+
 type Board struct {
 	cells  [5][5]Cell
 	marks  byte
 	hasWon bool
+}
+
+func (b *Board) reset() {
+	b.hasWon = false
+	b.marks = 0
+	for _, row := range b.cells {
+		for _, cell := range row {
+			cell.marked = false
+		}
+	}
 }
 
 func (b *Board) mark(value byte) {
@@ -88,12 +99,11 @@ func getInput(filename string) (calls *[]byte, boards *[]*Board) {
 
 	boards = new([]*Board)
 	for scanner.Scan() {
-		board := Board{}
-
+		var board Board
 		for y := 0; y < 5; y++ {
 			for x := 0; x < 5; x++ {
-				if (x != 0 || y != 0) && !scanner.Scan() {
-					panic("Incomplete board")
+				if x != 0 || y != 0 {
+					scanner.Scan()
 				}
 				value, _ := strconv.Atoi(scanner.Text())
 				board.cells[y][x].value = byte(value)
@@ -106,45 +116,42 @@ func getInput(filename string) (calls *[]byte, boards *[]*Board) {
 	return
 }
 
-func partOne(filename string) {
-	calls, boards := getInput(filename)
-
-	for _, value := range *calls {
-		for _, board := range *boards {
-			board.mark(value)
-			if board.hasWon {
-				println("\tPart one:", board.unmarkedSum()*int(value))
-				return
-			}
-		}
-	}
-}
-
-func partTwo(filename string) {
-	calls, boards := getInput(filename)
-
-	var lastBoard *Board
-	var lastCall int
-	for _, board := range *boards {
-		for call, value := range *calls {
-			board.mark(value)
-			if board.hasWon {
-				if call > lastCall {
-					lastBoard = board
-					lastCall = call
-				}
-				break
-			}
-		}
-	}
-
-	println("\tPart two:", lastBoard.unmarkedSum()*int((*calls)[lastCall]))
-}
-
 func main() {
 	for _, filename := range []string{"example.txt", "input.txt"} {
 		println(filename)
-		partOne(filename)
-		partTwo(filename)
+
+		calls, boards := getInput(filename)
+
+	loop:
+		for _, value := range *calls {
+			for _, board := range *boards {
+				board.mark(value)
+				if board.hasWon {
+					println("\tPart one:", board.unmarkedSum()*int(value))
+					break loop
+				}
+			}
+		}
+
+		for _, board := range *boards {
+			board.reset()
+		}
+
+		var lastBoard *Board
+		var lastCall int
+		for _, board := range *boards {
+			for call, value := range *calls {
+				board.mark(value)
+				if board.hasWon {
+					if call > lastCall {
+						lastBoard = board
+						lastCall = call
+					}
+					break
+				}
+			}
+		}
+
+		println("\tPart two:", lastBoard.unmarkedSum()*int((*calls)[lastCall]))
 	}
 }

@@ -61,11 +61,7 @@ func partTwo(filename string) {
 			numBits = len(scanner.Text())
 		}
 
-		value, err := strconv.ParseUint(scanner.Text(), 2, 0)
-		if err != nil {
-			panic(err.Error())
-		}
-
+		value, _ := strconv.ParseUint(scanner.Text(), 2, 0)
 		values = append(values, int(value))
 		numValues++
 	}

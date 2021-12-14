@@ -16,41 +16,9 @@ func abs(x int) int {
 
 type Crabs []int
 
-func (c *Crabs) leastFuelNeededToAlign(min, max int, f func(x int) int) int {
-	leastFuelNeeded := math.MaxInt
-	for target := min; target <= max; target++ {
-		fuelNeeded := 0
-		for _, pos := range *c {
-			fuelNeeded += f(abs(target - pos))
-		}
-
-		if fuelNeeded < leastFuelNeeded {
-			leastFuelNeeded = fuelNeeded
-		}
-	}
-
-	return leastFuelNeeded
-}
-
-func getInput(filename string) (crabs *Crabs, min, max int) {
-	content, err := os.ReadFile(filename)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	crabs = new(Crabs)
-	for _, posStr := range strings.Split(string(content), ",") {
-		pos, err := strconv.Atoi(posStr)
-		if err != nil {
-			panic(err.Error())
-		}
-
-		*crabs = append(*crabs, pos)
-	}
-
+func (c *Crabs) getMinMaxPositions() (min, max int) {
 	min = math.MaxInt
-	max = 0
-	for _, pos := range *crabs {
+	for _, pos := range *c {
 		if pos < min {
 			min = pos
 		}
@@ -62,16 +30,46 @@ func getInput(filename string) (crabs *Crabs, min, max int) {
 	return
 }
 
+func (c *Crabs) leastFuelNeededToAlign(min, max int, calc func(x int) int) int {
+	leastFuelNeeded := math.MaxInt
+	for target := min; target <= max; target++ {
+		fuelNeeded := 0
+		for _, pos := range *c {
+			fuelNeeded += calc(abs(target - pos))
+		}
+
+		if fuelNeeded < leastFuelNeeded {
+			leastFuelNeeded = fuelNeeded
+		}
+	}
+
+	return leastFuelNeeded
+}
+
+func getInput(filename string) (crabs *Crabs) {
+	content, err := os.ReadFile(filename)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	crabs = new(Crabs)
+	for _, posStr := range strings.Split(string(content), ",") {
+		pos, _ := strconv.Atoi(posStr)
+		*crabs = append(*crabs, pos)
+	}
+
+	return
+}
+
 func main() {
 	for _, filename := range []string{"example.txt", "input.txt"} {
 		println(filename)
 
-		crabs, min, max := getInput(filename)
-
+		crabs := getInput(filename)
+		min, max := crabs.getMinMaxPositions()
 		println("\tPart one:", crabs.leastFuelNeededToAlign(min, max, func(x int) int {
 			return x
 		}))
-
 		println("\tPart two:", crabs.leastFuelNeededToAlign(min, max, func(x int) int {
 			return (x * (x + 1)) / 2
 		}))

@@ -13,20 +13,10 @@ type Point struct {
 
 func (p *Point) parse(input string) {
 	xy := strings.Split(input, ",")
-	if len(xy) != 2 {
-		panic("Malformed coordinate input")
-	}
 
-	x, err := strconv.Atoi(xy[0])
-	if err != nil {
-		panic(err.Error())
-	}
+	x, _ := strconv.Atoi(xy[0])
 	p.x = x
-
-	y, err := strconv.Atoi(xy[1])
-	if err != nil {
-		panic(err.Error())
-	}
+	y, _ := strconv.Atoi(xy[1])
 	p.y = y
 }
 
@@ -152,14 +142,10 @@ func getInput(filename string, includeDiagonals bool) (lines *[]Line, width, hei
 	scanner := bufio.NewScanner(f)
 	scanner.Split(bufio.ScanWords)
 	for scanner.Scan() {
-		p1 := Point{}
+		var p1, p2 Point
 		p1.parse(scanner.Text())
-
-		if !scanner.Scan() || scanner.Text() != "->" || !scanner.Scan() {
-			panic("Malformed input")
-		}
-
-		p2 := Point{}
+		scanner.Scan() // Arrow
+		scanner.Scan()
 		p2.parse(scanner.Text())
 
 		if includeDiagonals || p1.x == p2.x || p1.y == p2.y {
