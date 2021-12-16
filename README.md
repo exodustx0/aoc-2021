@@ -63,3 +63,7 @@ I feel like I've got the hang of Go now. At that, I've also come to terms with h
 Right... Well, I got what I asked for: a spike in difficulty! This day delivered. Pathfinding algorithms, y'all. So, I've looked into pathfinding algorithms before in passing, for their use in solving mazes which I find fascinating. I remembered a few minutes into the challenge that I'd once seen [a video that demonstrates the A* algorithm](https://youtu.be/icZj67PTFhc) (followed this guy for his NES stuff, stuck around for videos like these), so I rewatched it, reacquainted myself with the algorithm, and mostly copied what he did for my implementation.
 
 The heuristics part of the algorithm _properly_ baffles me. Simply returning `1` resulted in the fastest (~8s on my machine) correct solve. I might at some point return to this and try to figure out how this _should_ work, but for now, this works, it netted me the points, and I want to clear my head of this!
+
+### Day 16
+
+Heck yeah! I'd been hoping that there'd be a challenge to do with parsing binary data. Loved this!
