@@ -69,3 +69,7 @@ The heuristics part of the algorithm _properly_ baffles me. Simply returning `1`
 Heck yeah! I'd been hoping that there'd be a challenge to do with parsing binary data. Loved this!
 
 ...except for how Go didn't allow me to name a struct field `type`. Aaaaaaaargh. What's up with that?
+
+### Day 17
+
+First day where I felt _really_ compelled to not finish the challenge, and subsequently actually ended up going with that. I have a reasonable idea for how to implement the solution too, but I really don't feel like implementing it. Maybe I'll do that later, but for now... something else.
