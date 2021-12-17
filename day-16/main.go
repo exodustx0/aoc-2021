@@ -75,22 +75,22 @@ func (t *TransmissionParser) readBits(numBits uint) (value uint) {
 	return
 }
 
-type PacketType uint
+type PacketKind uint
 
 const (
-	PT_SUM PacketType = iota
-	PT_PRODUCT
-	PT_MIN
-	PT_MAX
-	PT_LITERAL
-	PT_GREATER
-	PT_LESS
-	PT_EQUAL
+	PK_SUM PacketKind = iota
+	PK_PRODUCT
+	PK_MIN
+	PK_MAX
+	PK_LITERAL
+	PK_GREATER
+	PK_LESS
+	PK_EQUAL
 )
 
 type Packet struct {
 	version uint
-	t       PacketType
+	kind    PacketKind
 
 	value      uint
 	subPackets []*Packet
@@ -107,7 +107,7 @@ func (p *Packet) getVersionSum() uint {
 }
 
 func (p *Packet) computeValue() uint {
-	if p.t == PT_LITERAL {
+	if p.kind == PK_LITERAL {
 		return p.value
 	}
 
@@ -116,24 +116,24 @@ func (p *Packet) computeValue() uint {
 		values = append(values, subPacket.computeValue())
 	}
 
-	switch p.t {
-	case PT_SUM:
+	switch p.kind {
+	case PK_SUM:
 		return sum(values)
-	case PT_PRODUCT:
+	case PK_PRODUCT:
 		return product(values)
-	case PT_MIN:
+	case PK_MIN:
 		return min(values)
-	case PT_MAX:
+	case PK_MAX:
 		return max(values)
-	case PT_GREATER:
+	case PK_GREATER:
 		if values[0] > values[1] {
 			return 1
 		}
-	case PT_LESS:
+	case PK_LESS:
 		if values[0] < values[1] {
 			return 1
 		}
-	case PT_EQUAL:
+	case PK_EQUAL:
 		if values[0] == values[1] {
 			return 1
 		}
@@ -145,11 +145,11 @@ func (p *Packet) computeValue() uint {
 func (t *TransmissionParser) readPacket() *Packet {
 	packet := Packet{
 		version: t.readBits(3),
-		t:       PacketType(t.readBits(3)),
+		kind:    PacketKind(t.readBits(3)),
 	}
 
-	switch packet.t {
-	case PT_LITERAL:
+	switch packet.kind {
+	case PK_LITERAL:
 		packet.value = t.readPacketLiteral()
 	default:
 		packet.subPackets = t.readPacketOperator()
