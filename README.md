@@ -79,3 +79,5 @@ First day where I felt _really_ compelled to not finish the challenge, and subse
 Okay, that was a doozie. I spent just under 7 hours non-stop on this. Debugging this was a nightmare, and in the last hour I had the additional headache of Go's tempfile builds (that get made for every individual `go run main.go`) not being deleted (which Go errors on). Manually removing these tempfile builds wouldn't work either. Windows would act like I successfully deleted them, but they'd still be there. I assume antivirus shenanigans.
 
 Despite all that, I found this to be a very fun puzzle to maneuver!
+
+EDIT - Oh, right, I forgot about the start of the day. The lack of unions in Go messed with me. Look at the [`Value` struct](https://github.com/exodustx0/aoc-2021/blob/cd703911b3581b90b660caea90974f0244095609/day-18/main.go#L18): a `Value` represents _either_ a number _or_ a pair. I ended up doing the unioning by adding a "kind" that denotes which type in the union is in use, and then ignore all fields irrelevant to that type. Seems inelegant to me, but as far as I can tell, this is the most elegant it gets with Go. Would love to hear how this can be done better.
