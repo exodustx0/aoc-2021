@@ -73,3 +73,9 @@ Heck yeah! I'd been hoping that there'd be a challenge to do with parsing binary
 ### Day 17
 
 First day where I felt _really_ compelled to not finish the challenge, and subsequently actually ended up going with that. I have a reasonable idea for how to implement the solution too, but I really don't feel like implementing it. Maybe I'll do that later, but for now... something else.
+
+### Day 18
+
+Okay, that was a doozie. I spent just under 7 hours non-stop on this. Debugging this was a nightmare, and in the last hour I had the additional headache of Go's tempfile builds (that get made for every individual `go run main.go`) not being deleted (which Go errors on). Manually removing these tempfile builds wouldn't work either. Windows would act like I successfully deleted them, but they'd still be there. I assume antivirus shenanigans.
+
+Despite all that, I found this to be a very fun puzzle to maneuver!
