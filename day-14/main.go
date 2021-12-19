@@ -37,7 +37,7 @@ func (p *Polymer) step(times int) {
 	}
 }
 
-func (p *Polymer) getElementCountRange() int {
+func (p *Polymer) elementCountRange() int {
 	elementCounts := make(map[byte]int)
 	for pair, pairCount := range p.pairs {
 		elementCounts[pair[0]] += pairCount
@@ -59,7 +59,7 @@ func (p *Polymer) getElementCountRange() int {
 	return max - min
 }
 
-func getInput(filename string) (polymer *Polymer) {
+func newPolymer(filename string) *Polymer {
 	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
@@ -72,7 +72,7 @@ func getInput(filename string) (polymer *Polymer) {
 	chain := scanner.Text()
 	chainLength := len(chain)
 
-	polymer = &Polymer{
+	polymer := Polymer{
 		last:  chain[chainLength-1],
 		pairs: make(map[Pair]int),
 	}
@@ -90,17 +90,17 @@ func getInput(filename string) (polymer *Polymer) {
 		polymer.rules = append(polymer.rules, InsertionRule{pair, to})
 	}
 
-	return
+	return &polymer
 }
 
 func main() {
 	for _, filename := range []string{"example.txt", "input.txt"} {
 		println(filename)
 
-		polymer := getInput(filename)
+		polymer := newPolymer(filename)
 		polymer.step(10)
-		println("\tPart one:", polymer.getElementCountRange())
+		println("\tPart one:", polymer.elementCountRange())
 		polymer.step(40 - 10)
-		println("\tPart two:", polymer.getElementCountRange())
+		println("\tPart two:", polymer.elementCountRange())
 	}
 }

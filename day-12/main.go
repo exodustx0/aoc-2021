@@ -74,7 +74,7 @@ func (cs *CaveSystem) countPaths(extra bool) (count int) {
 	return
 }
 
-func getInput(filename string) *CaveSystem {
+func newCaveSystem(filename string) *CaveSystem {
 	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
@@ -107,8 +107,9 @@ func getInput(filename string) *CaveSystem {
 
 func main() {
 	for _, filename := range []string{"example1.txt", "example2.txt", "example3.txt", "input.txt"} {
-		system := getInput(filename)
 		println(filename)
+
+		system := newCaveSystem(filename)
 		println("\tPart one:", system.countPaths(false))
 		println("\tPart two:", system.countPaths(true))
 	}

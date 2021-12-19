@@ -113,7 +113,7 @@ func (t *Target) countPossibleInitialVelocities() (count int) {
 	return
 }
 
-func getInput(filename string) *Target {
+func newTarget(filename string) *Target {
 	inputBuf, err := os.ReadFile(filename)
 	if err != nil {
 		panic(err.Error())
@@ -131,7 +131,7 @@ func main() {
 	for _, filename := range []string{"example.txt", "input.txt"} {
 		println(filename)
 
-		target := getInput(filename)
+		target := newTarget(filename)
 		println("\tPart one:", target.findHighestPossiblePosition())
 		println("\tPart two:", target.countPossibleInitialVelocities())
 	}

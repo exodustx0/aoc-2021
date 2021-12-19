@@ -81,23 +81,23 @@ func (b *Board) unmarkedSum() (sum int) {
 	return
 }
 
-func getInput(filename string) (calls *[]byte, boards *[]*Board) {
+func getInput(filename string) (*[]byte, *[]*Board) {
 	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
 	}
 	defer f.Close()
 
-	calls = new([]byte)
+	var calls []byte
 	scanner := bufio.NewScanner(f)
 	scanner.Split(bufio.ScanWords)
 	scanner.Scan()
 	for _, valueStr := range strings.Split(scanner.Text(), ",") {
 		value, _ := strconv.Atoi(valueStr)
-		*calls = append(*calls, byte(value))
+		calls = append(calls, byte(value))
 	}
 
-	boards = new([]*Board)
+	var boards []*Board
 	for scanner.Scan() {
 		var board Board
 		for y := 0; y < 5; y++ {
@@ -110,10 +110,10 @@ func getInput(filename string) (calls *[]byte, boards *[]*Board) {
 			}
 		}
 
-		*boards = append(*boards, &board)
+		boards = append(boards, &board)
 	}
 
-	return
+	return &calls, &boards
 }
 
 func main() {

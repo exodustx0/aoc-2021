@@ -16,7 +16,7 @@ func abs(x int) int {
 
 type Crabs []int
 
-func (c *Crabs) getMinMaxPositions() (min, max int) {
+func (c *Crabs) minMaxPositions() (min, max int) {
 	min = math.MaxInt
 	for _, pos := range *c {
 		if pos < min {
@@ -46,32 +46,28 @@ func (c *Crabs) leastFuelNeededToAlign(min, max int, calc func(x int) int) int {
 	return leastFuelNeeded
 }
 
-func getInput(filename string) (crabs *Crabs) {
+func newCrabs(filename string) *Crabs {
 	content, err := os.ReadFile(filename)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	crabs = new(Crabs)
+	var crabs Crabs
 	for _, posStr := range strings.Split(string(content), ",") {
 		pos, _ := strconv.Atoi(posStr)
-		*crabs = append(*crabs, pos)
+		crabs = append(crabs, pos)
 	}
 
-	return
+	return &crabs
 }
 
 func main() {
 	for _, filename := range []string{"example.txt", "input.txt"} {
 		println(filename)
 
-		crabs := getInput(filename)
-		min, max := crabs.getMinMaxPositions()
-		println("\tPart one:", crabs.leastFuelNeededToAlign(min, max, func(x int) int {
-			return x
-		}))
-		println("\tPart two:", crabs.leastFuelNeededToAlign(min, max, func(x int) int {
-			return (x * (x + 1)) / 2
-		}))
+		crabs := newCrabs(filename)
+		min, max := crabs.minMaxPositions()
+		println("\tPart one:", crabs.leastFuelNeededToAlign(min, max, func(x int) int { return x }))
+		println("\tPart two:", crabs.leastFuelNeededToAlign(min, max, func(x int) int { return (x * (x + 1)) / 2 }))
 	}
 }

@@ -67,7 +67,7 @@ func (g *Grid) print() {
 	}
 }
 
-func getInput(filename string) (grid *Grid) {
+func newGrid(filename string) *Grid {
 	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
@@ -75,7 +75,7 @@ func getInput(filename string) (grid *Grid) {
 	defer f.Close()
 
 	var y byte
-	grid = new(Grid)
+	var grid Grid
 	scanner := bufio.NewScanner(f)
 	for ; scanner.Scan(); y++ {
 		for x, level := range scanner.Text() {
@@ -112,14 +112,14 @@ func getInput(filename string) (grid *Grid) {
 		}
 	}
 
-	return
+	return &grid
 }
 
 func main() {
 	for _, filename := range []string{"example.txt", "input.txt"} {
 		println(filename)
 
-		grid := getInput(filename)
+		grid := newGrid(filename)
 		grid.reset()
 		grid.step(100)
 		println("\tPart one:", grid.countFlashes())

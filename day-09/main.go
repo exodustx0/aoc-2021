@@ -38,7 +38,7 @@ type Heightmap struct {
 	lowPoints     []Coordinate
 }
 
-func (hm *Heightmap) getRiskLevelSum() (sum int) {
+func (hm *Heightmap) riskLevelSum() (sum int) {
 	for _, lowPoint := range hm.lowPoints {
 		sum += 1 + int(hm.grid[lowPoint.y][lowPoint.x])
 	}
@@ -46,40 +46,40 @@ func (hm *Heightmap) getRiskLevelSum() (sum int) {
 	return
 }
 
-func (hm *Heightmap) getBasinNeighbors(c Coordinate) []Coordinate {
-	var neighbors []Coordinate
+func (hm *Heightmap) basinNeighbours(c Coordinate) []Coordinate {
+	var neighbours []Coordinate
 	x := c.x
 	y := c.y
 	if x != 0 && hm.grid[y][x-1] != 9 {
-		neighbors = append(neighbors, Coordinate{x - 1, y})
+		neighbours = append(neighbours, Coordinate{x - 1, y})
 	}
 	if x != hm.width-1 && hm.grid[y][x+1] != 9 {
-		neighbors = append(neighbors, Coordinate{x + 1, y})
+		neighbours = append(neighbours, Coordinate{x + 1, y})
 	}
 	if y != 0 && hm.grid[y-1][x] != 9 {
-		neighbors = append(neighbors, Coordinate{x, y - 1})
+		neighbours = append(neighbours, Coordinate{x, y - 1})
 	}
 	if y != hm.height-1 && hm.grid[y+1][x] != 9 {
-		neighbors = append(neighbors, Coordinate{x, y + 1})
+		neighbours = append(neighbours, Coordinate{x, y + 1})
 	}
 
-	return neighbors
+	return neighbours
 }
 
-func (hm *Heightmap) getBasin(c Coordinate, basin *Basin) {
-	for _, neighbor := range hm.getBasinNeighbors(c) {
-		if !basin.includes(neighbor) {
-			*basin = append(*basin, neighbor)
-			hm.getBasin(neighbor, basin)
+func (hm *Heightmap) addToBasin(c Coordinate, basin *Basin) {
+	for _, neighbour := range hm.basinNeighbours(c) {
+		if !basin.includes(neighbour) {
+			*basin = append(*basin, neighbour)
+			hm.addToBasin(neighbour, basin)
 		}
 	}
 }
 
-func (hm *Heightmap) getBasinSizes() []int {
+func (hm *Heightmap) basinSizes() []int {
 	var sizes []int
 	for _, lowPoint := range hm.lowPoints {
 		basin := Basin{lowPoint}
-		hm.getBasin(lowPoint, &basin)
+		hm.addToBasin(lowPoint, &basin)
 		sizes = append(sizes, len(basin))
 	}
 
@@ -88,14 +88,14 @@ func (hm *Heightmap) getBasinSizes() []int {
 	return sizes
 }
 
-func getInput(filename string) (heightmap *Heightmap) {
+func newHeightmap(filename string) *Heightmap {
 	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
 	}
 	defer f.Close()
 
-	heightmap = new(Heightmap)
+	var heightmap Heightmap
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
 		var row []byte
@@ -127,15 +127,15 @@ func getInput(filename string) (heightmap *Heightmap) {
 		}
 	}
 
-	return
+	return &heightmap
 }
 
 func main() {
 	for _, filename := range []string{"example.txt", "input.txt"} {
 		println(filename)
 
-		heightmap := getInput(filename)
-		println("\tPart one:", heightmap.getRiskLevelSum())
-		println("\tPart two:", product(heightmap.getBasinSizes()[:3]))
+		heightmap := newHeightmap(filename)
+		println("\tPart one:", heightmap.riskLevelSum())
+		println("\tPart two:", product(heightmap.basinSizes()[:3]))
 	}
 }

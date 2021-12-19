@@ -19,36 +19,36 @@ func (f *FishTimers) tick(times int) {
 	}
 }
 
-func (f *FishTimers) countFish() (count int) {
+func (f *FishTimers) totalFish() (total int) {
 	for i := 0; i < 9; i++ {
-		count += f[i]
+		total += f[i]
 	}
 	return
 }
 
-func getInput(filename string) (fishTimers *FishTimers) {
+func newFishTimers(filename string) *FishTimers {
 	content, err := os.ReadFile(filename)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	fishTimers = new(FishTimers)
+	var fishTimers FishTimers
 	for _, timerStr := range strings.Split(string(content), ",") {
 		timer, _ := strconv.Atoi(timerStr)
 		fishTimers[timer]++
 	}
 
-	return
+	return &fishTimers
 }
 
 func main() {
 	for _, filename := range []string{"example.txt", "input.txt"} {
 		println(filename)
 
-		fishTimers := getInput(filename)
+		fishTimers := newFishTimers(filename)
 		fishTimers.tick(80)
-		println("\tPart one:", fishTimers.countFish())
+		println("\tPart one:", fishTimers.totalFish())
 		fishTimers.tick(256 - 80)
-		println("\tPart two:", fishTimers.countFish())
+		println("\tPart two:", fishTimers.totalFish())
 	}
 }

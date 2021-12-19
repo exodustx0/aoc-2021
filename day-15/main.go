@@ -22,7 +22,7 @@ type Node struct {
 type Grid [][]*Node
 
 // Implements the A* algorithm... poorly.
-func (g *Grid) getLowestTotalRisk() (totalRisk int) {
+func (g *Grid) lowestTotalRisk() (totalRisk int) {
 	for _, row := range *g {
 		for _, node := range row {
 			node.global = math.MaxFloat64
@@ -133,7 +133,7 @@ func (g *Grid) expand() {
 	}
 }
 
-func (g *Grid) getVisitedPercentage() float64 {
+func (g *Grid) visitedPercentage() float64 {
 	var visited int
 	for _, row := range *g {
 		for _, node := range row {
@@ -148,7 +148,7 @@ func (g *Grid) getVisitedPercentage() float64 {
 	return 100 * float64(visited/(width*height))
 }
 
-func getInput(filename string) *Grid {
+func newGrid(filename string) *Grid {
 	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
@@ -195,11 +195,11 @@ func main() {
 		println(filename)
 
 		start := time.Now()
-		grid := getInput(filename)
-		println("\tPart one:", grid.getLowestTotalRisk())
+		grid := newGrid(filename)
+		println("\tPart one:", grid.lowestTotalRisk())
 		grid.expand()
-		println("\tPart two:", grid.getLowestTotalRisk())
-		fmt.Printf("\tVisited: %f%%\n", grid.getVisitedPercentage())
+		println("\tPart two:", grid.lowestTotalRisk())
+		fmt.Printf("\tVisited: %f%%\n", grid.visitedPercentage())
 		fmt.Printf("\tDuration: %fs\n", time.Since(start).Seconds())
 	}
 }

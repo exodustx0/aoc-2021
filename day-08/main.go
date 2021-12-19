@@ -107,7 +107,7 @@ func (d *Display) decode() {
 	d.digits = [10]*Digit{zero, one, two, three, four, five, six, seven, eight, nine}
 }
 
-func (d *Display) getValue() (value int) {
+func (d *Display) value() (value int) {
 	for i, digit := range d.output {
 		var number int
 		for j, digit2 := range d.digits {
@@ -142,20 +142,20 @@ func (d *Displays) countEasyDigits() (count int) {
 
 func (d *Displays) countValues() (count int) {
 	for _, display := range *d {
-		count += display.getValue()
+		count += display.value()
 	}
 
 	return
 }
 
-func getInput(filename string) (displays *Displays) {
+func newDisplays(filename string) *Displays {
 	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
 	}
 	defer f.Close()
 
-	displays = new(Displays)
+	var displays Displays
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
 		line := strings.Split(scanner.Text(), " ")
@@ -177,17 +177,17 @@ func getInput(filename string) (displays *Displays) {
 
 		display := Display{digits, output}
 		display.decode()
-		*displays = append(*displays, display)
+		displays = append(displays, display)
 	}
 
-	return
+	return displays
 }
 
 func main() {
 	for _, filename := range []string{"example.txt", "input.txt"} {
 		println(filename)
 
-		displays := getInput(filename)
+		displays := newDisplays(filename)
 		println("\tPart one:", displays.countEasyDigits())
 		println("\tPart two:", displays.countValues())
 	}

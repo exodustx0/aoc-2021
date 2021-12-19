@@ -116,7 +116,7 @@ startOver:
 		case v.pair[0].reduce(nestLevel+1, mode):
 			fallthrough
 		case v.pair[1].reduce(nestLevel+1, mode):
-			if v.parent == nil {
+			if nestLevel == 0 {
 				mode = RM_PAIR
 				goto startOver
 			}
@@ -170,17 +170,17 @@ func (ir *ValuesReader) readNumber() byte {
 	return byte(number)
 }
 
-func (hr *ValuesReader) newValue(parent *Value) *Value {
+func (ir *ValuesReader) newValue(parent *Value) *Value {
 	value := new(Value)
-	if hr.isPair() {
+	if ir.isPair() {
 		value.kind = VK_PAIR
-		value.pair[0] = hr.newValue(value)
-		hr.position++ // Comma
-		value.pair[1] = hr.newValue(value)
-		hr.position++ // Close bracket
+		value.pair[0] = ir.newValue(value)
+		ir.position++ // Comma
+		value.pair[1] = ir.newValue(value)
+		ir.position++ // Close bracket
 	} else {
 		value.kind = VK_NUMBER
-		value.number = hr.readNumber()
+		value.number = ir.readNumber()
 	}
 
 	value.parent = parent

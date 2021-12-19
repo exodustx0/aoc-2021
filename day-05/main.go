@@ -11,13 +11,11 @@ type Point struct {
 	x, y int
 }
 
-func (p *Point) parse(input string) {
+func newPoint(input string) *Point {
 	xy := strings.Split(input, ",")
-
 	x, _ := strconv.Atoi(xy[0])
-	p.x = x
 	y, _ := strconv.Atoi(xy[1])
-	p.y = y
+	return &Point{x, y}
 }
 
 type Line struct {
@@ -104,7 +102,7 @@ func (g *Grid) drawLines(lines *[]Line) {
 	}
 }
 
-func (g *Grid) getOverlapCount() int {
+func (g *Grid) overlapCount() int {
 	var overlap int
 	for _, row := range *g {
 		for _, cell := range row {
@@ -142,20 +140,19 @@ func getInput(filename string, includeDiagonals bool) (lines *[]Line, width, hei
 	scanner := bufio.NewScanner(f)
 	scanner.Split(bufio.ScanWords)
 	for scanner.Scan() {
-		var p1, p2 Point
-		p1.parse(scanner.Text())
+		p1 := newPoint(scanner.Text())
 		scanner.Scan() // Arrow
 		scanner.Scan()
-		p2.parse(scanner.Text())
+		p2 := newPoint(scanner.Text())
 
 		if includeDiagonals || p1.x == p2.x || p1.y == p2.y {
 			var line Line
 			if p1.x > p2.x || p1.y > p2.y {
-				line.from = &p2
-				line.to = &p1
+				line.from = p2
+				line.to = p1
 			} else {
-				line.from = &p1
-				line.to = &p2
+				line.from = p1
+				line.to = p2
 			}
 
 			*lines = append(*lines, line)
@@ -180,7 +177,7 @@ func partOne(filename string) {
 	var grid Grid
 	grid.init(width, height)
 	grid.drawLines(lines)
-	println("\tPart one:", grid.getOverlapCount())
+	println("\tPart one:", grid.overlapCount())
 }
 
 func partTwo(filename string) {
@@ -189,7 +186,7 @@ func partTwo(filename string) {
 	var grid Grid
 	grid.init(width, height)
 	grid.drawLines(lines)
-	println("\tPart two:", grid.getOverlapCount())
+	println("\tPart two:", grid.overlapCount())
 }
 
 func main() {

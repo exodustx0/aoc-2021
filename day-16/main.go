@@ -96,11 +96,11 @@ type Packet struct {
 	subPackets []*Packet
 }
 
-func (p *Packet) getVersionSum() uint {
+func (p *Packet) versionSum() uint {
 	sum := p.version
 
 	for _, subPacket := range p.subPackets {
-		sum += subPacket.getVersionSum()
+		sum += subPacket.versionSum()
 	}
 
 	return sum
@@ -195,7 +195,7 @@ func (t *TransmissionParser) readPacketLiteral() uint {
 	return value
 }
 
-func getInput(transmission []byte) *Packet {
+func newPacket(transmission []byte) *Packet {
 	parser := TransmissionParser{
 		transmission: make([]byte, len(transmission)/2),
 	}
@@ -228,17 +228,22 @@ type Expectation struct {
 }
 
 func main() {
-	println("Version tests:")
+	println("Version tests")
 	for _, e := range []Expectation{
 		{"8A004A801A8002F478", 16},
 		{"620080001611562C8802118E34", 12},
 		{"C0015000016115A2E0802F182340", 23},
 		{"A0016C880162017C3686B18A3D4780", 31},
 	} {
-		fmt.Printf("\t%s: %t\n", e.input, getInput([]byte(e.input)).getVersionSum() == e.output)
+		fmt.Printf("\t%s: ", e.input)
+		if newPacket([]byte(e.input)).versionSum() == e.output {
+			println("✅")
+		} else {
+			println("❎")
+		}
 	}
 
-	println("Value tests:")
+	println("Value tests")
 	for _, e := range []Expectation{
 		{"C200B40A82", 3},
 		{"04005AC33890", 54},
@@ -249,16 +254,21 @@ func main() {
 		{"9C005AC2F8F0", 0},
 		{"9C0141080250320F1802104A08", 1},
 	} {
-		fmt.Printf("\t%s: %t\n", e.input, getInput([]byte(e.input)).computeValue() == e.output)
+		fmt.Printf("\t%s: ", e.input)
+		if newPacket([]byte(e.input)).computeValue() == e.output {
+			println("✅")
+		} else {
+			println("❎")
+		}
 	}
 
-	println("input.txt:")
+	println("input.txt")
 	transmission, err := os.ReadFile("input.txt")
 	if err != nil {
 		panic(err.Error())
 	}
 
-	packet := getInput(transmission)
-	println("\tPart one:", packet.getVersionSum())
+	packet := newPacket(transmission)
+	println("\tPart one:", packet.versionSum())
 	println("\tPart two:", packet.computeValue())
 }

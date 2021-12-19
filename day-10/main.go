@@ -60,28 +60,28 @@ lineLoop:
 	return
 }
 
-func getInput(filename string) (lines *NavigationSubsystem) {
+func newNavigationSystem(filename string) *NavigationSubsystem {
 	f, err := os.Open(filename)
 	if err != nil {
 		panic(err.Error())
 	}
 	defer f.Close()
 
-	lines = new(NavigationSubsystem)
+	var system NavigationSubsystem
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
-		*lines = append(*lines, []rune(scanner.Text()))
+		system = append(system, []rune(scanner.Text()))
 	}
 
-	return
+	return &system
 }
 
 func main() {
 	for _, filename := range []string{"example.txt", "input.txt"} {
 		println(filename)
 
-		lines := getInput(filename)
-		errorScore, middleScore := lines.parse()
+		system := newNavigationSystem(filename)
+		errorScore, middleScore := system.parse()
 		println("\tPart one:", errorScore)
 		println("\tPart two:", middleScore)
 	}
