@@ -180,7 +180,7 @@ func newDisplays(filename string) *Displays {
 		displays = append(displays, display)
 	}
 
-	return displays
+	return &displays
 }
 
 func main() {
