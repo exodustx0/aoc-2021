@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/hex"
 	"fmt"
 	"math"
 	"os"
@@ -214,30 +215,9 @@ func (t *TransmissionParser) readPacketLiteral() uint {
 	return value
 }
 
-func newPacket(transmission []byte) *Packet {
-	parser := TransmissionParser{
-		transmission: make([]byte, len(transmission)/2),
-	}
-	for _, hexChar := range transmission {
-		var nybble byte
-		if hexChar >= '0' && hexChar <= '9' {
-			nybble = hexChar - '0'
-		} else if hexChar >= 'A' && hexChar <= 'F' {
-			nybble = hexChar - 'A' + 10
-		}
-
-		if parser.bitPosition == 0 {
-			parser.bitPosition += 4
-			parser.transmission[parser.bytePosition] = nybble << 4
-		} else {
-			parser.bitPosition = 0
-			parser.transmission[parser.bytePosition] |= nybble
-			parser.bytePosition++
-		}
-	}
-
-	parser.bytePosition = 0
-
+func newPacket(transmissionStr string) *Packet {
+	transmission, _ := hex.DecodeString(transmissionStr)
+	parser := TransmissionParser{transmission: transmission}
 	return parser.readPacket()
 }
 
@@ -255,7 +235,7 @@ func main() {
 		{"A0016C880162017C3686B18A3D4780", 31},
 	} {
 		fmt.Printf("\t%s: ", e.input)
-		if newPacket([]byte(e.input)).versionSum() == e.output {
+		if newPacket(e.input).versionSum() == e.output {
 			println("✅")
 		} else {
 			println("❎")
@@ -274,7 +254,7 @@ func main() {
 		{"9C0141080250320F1802104A08", 1},
 	} {
 		fmt.Printf("\t%s: ", e.input)
-		if newPacket([]byte(e.input)).computeValue() == e.output {
+		if newPacket(e.input).computeValue() == e.output {
 			println("✅")
 		} else {
 			println("❎")
@@ -287,7 +267,7 @@ func main() {
 		panic(err.Error())
 	}
 
-	packet := newPacket(transmission)
+	packet := newPacket(string(transmission))
 	println("\tPart one:", packet.versionSum())
 	println("\tPart two:", packet.computeValue())
 }
