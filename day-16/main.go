@@ -64,12 +64,31 @@ func (t *TransmissionParser) readBit() bool {
 }
 
 func (t *TransmissionParser) readBits(numBits uint) (value uint) {
-	for numBits != 0 {
-		value <<= 1
-		if t.readBit() {
-			value |= 1
+	bitsLeft := numBits
+	for bitsLeft != 0 {
+		bitsToRead := 8 - t.bitPosition
+		if bitsLeft < bitsToRead {
+			bitsToRead = bitsLeft
 		}
-		numBits--
+
+		chunk := t.transmission[t.bytePosition]
+		removeLeadingBits := t.bitPosition != 0
+		t.bitPosition += bitsToRead
+		if t.bitPosition == 8 {
+			t.bitPosition = 0
+			t.bytePosition++
+		} else {
+			chunk >>= 8 - t.bitPosition
+		}
+
+		if removeLeadingBits {
+			chunk &= (1 << bitsToRead) - 1
+		}
+
+		value <<= bitsToRead
+		value |= uint(chunk)
+
+		bitsLeft -= bitsToRead
 	}
 
 	return
