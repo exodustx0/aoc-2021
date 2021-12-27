@@ -20,7 +20,7 @@ This repo is now public. What the heck, might as well. Not like I'm a contender 
 
 I loved today's challenge. I'm not trying to be done as fast as possible; rather, I try to learn where I feel that I can do better, to see where I can break free from thinking about problems in the usual chronological order (e.g. rather than mark every bingo board after every call, do the entire call sequence per board), etc. I really enjoy working with Go struct methods, and though I don't have much previous experience with pointers (only through studying certain big C++ projects), I really find that I love working with them and can do so intuitively.
 
-On the flipside, Go's opinionatedness has really shown it's — in my opinion — ugly side today, specifically in how it "beautifies" math expressions. Take [this line](https://github.com/exodustx0/aoc-2021/blob/8194544ed3/day-4/main.go#L154) that I ended up with (it was cleaned up a bit on day 6):
+On the flipside, Go's opinionatedness has really shown its — in my opinion — ugly side today, specifically in how it "beautifies" math expressions. Take [this line](https://github.com/exodustx0/aoc-2021/blob/8194544ed3/day-4/main.go#L154) that I ended up with (it was cleaned up a bit on day 6):
 
 ```go
 (*boards)[lastBoard].unmarkedSum()*int((*calls)[lastCall])
